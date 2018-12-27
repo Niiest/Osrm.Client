@@ -4,9 +4,15 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <RootNamespace>Osrm.Client</RootNamespace>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Title>Atlas.Osrm.Client.Standard</Title>
-        <PackageId>Atlas.Osrm.Client.Standard</PackageId>
-        <Authors />
+        <Title>Osrm.Client.Standard</Title>
+        <PackageId>Osrm.Client.Standard</PackageId>
+        <Authors>Pavel Pisligin</Authors>
+        <PackageProjectUrl>https://github.com/Niiest/Osrm.Client</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/Niiest/Osrm.Client/blob/master/LICENSE.md</PackageLicenseUrl>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <RepositoryUrl>https://github.com/Niiest/Osrm.Client</RepositoryUrl>
+        <PackageTags>osrm</PackageTags>
+        <PackageReleaseNotes>Added .NET Standard 2.0 support to the original library.</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>
