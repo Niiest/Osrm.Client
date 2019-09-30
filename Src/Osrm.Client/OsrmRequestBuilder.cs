@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Web;
 
@@ -35,15 +36,12 @@ namespace Osrm.Client
         {
             var uriBuilder = new UriBuilder(baseUrl);
             uriBuilder.Path += service;
-            var url = uriBuilder.Uri.ToString();
 
             var encodedParams = urlParams
                 .Select(x => string.Format("{0}={1}", HttpUtility.UrlEncode(x.Item1), HttpUtility.UrlEncode(x.Item2)))
                 .ToList();
 
-            var result = url + "?" + string.Join("&", encodedParams);
-
-            return result;
+            return uriBuilder.Uri + "?" + string.Join("&", encodedParams);
         }
 
         public static string GetUrl(string server, string service, string version, string profile, string coordinatesString, List<Tuple<string, string>> urlParams)

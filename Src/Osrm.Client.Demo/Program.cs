@@ -3,6 +3,7 @@ using Osrm.Client.v5;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,12 +23,15 @@ namespace Osrm.Client.Demo
             Trip5x(osrm5x);
 
             //  4x
-            OsrmClient osrm4x = new OsrmClient(OsrmUrl);
-            Route4x(osrm4x);
-            Table4x(osrm4x);
-            Match4x(osrm4x);
-            Nearest4x(osrm4x);
-            Trip4x(osrm4x);
+            using (var httpClient = new HttpClient() { BaseAddress = new Uri(OsrmUrl) })
+            {
+                var osrm4x = new OsrmClient(httpClient);
+                Route4x(osrm4x).GetAwaiter().GetResult();
+                /*Table4x(osrm4x).GetAwaiter().GetResult();
+                Match4x(osrm4x).GetAwaiter().GetResult();
+                Nearest4x(osrm4x).GetAwaiter().GetResult();
+                Trip4x(osrm4x).GetAwaiter().GetResult();*/
+            }
         }
 
         private static void Route5x(Osrm5x osrm)
@@ -109,8 +113,8 @@ namespace Osrm.Client.Demo
         private static void Trip5x(Osrm5x osrm)
         {
             var locations = new Location[] {
-                new Location(52.503033, 13.420526),
-                new Location(52.516582, 13.429290),
+                new Location(55.784824, 37.5953609),
+                new Location(47.2357137, 39.701505),
             };
 
             var result = osrm.Trip(locations);
@@ -118,23 +122,23 @@ namespace Osrm.Client.Demo
 
         #region 4x
 
-        private static void Route4x(OsrmClient osrm)
+        private static async Task Route4x(OsrmClient osrm)
         {
             var locations = new Location[] {
-                new Location(52.503033, 13.420526),
-                new Location(52.516582, 13.429290),
+                new Location(55.784824, 37.5953609),
+                new Location(47.2357137, 39.701505),
             };
 
-            var result = osrm.Route(locations);
+            var result = await osrm.RouteAsync(locations);
 
-            var result2 = osrm.Route(new ViarouteRequest()
+            var result2 = await osrm.RouteAsync(new ViarouteRequest()
             {
                 Locations = locations,
                 SendLocsAsEncodedPolyline = true,
                 Alternative = false,
             });
 
-            var result3 = osrm.Route(new ViarouteRequest()
+            var result3 = await osrm.RouteAsync(new ViarouteRequest()
             {
                 Locations = locations,
                 Instructions = true,
@@ -143,7 +147,7 @@ namespace Osrm.Client.Demo
             var instructions3 = result3.RouteInstructions;
         }
 
-        private static void Table4x(OsrmClient osrm)
+        private static async Task Table4x(OsrmClient osrm)
         {
             var locations = new Location[] {
                 new Location(52.554070, 13.160621),
@@ -152,7 +156,7 @@ namespace Osrm.Client.Demo
                 new Location(52.554070, 13.160621),
             };
 
-            var result = osrm.Table(locations);
+            var result = await osrm.TableAsync(locations);
 
             var src = new Location[] {
                 new Location(52.554070, 13.160621),
@@ -164,14 +168,14 @@ namespace Osrm.Client.Demo
                 new Location(52.554070, 13.160621),
             };
 
-            var result2 = osrm.Table(new TableRequest()
+            var result2 = await osrm.TableAsync(new TableRequest()
             {
                 SourceLocations = src,
                 DestinationLocations = dst
             });
         }
 
-        private static void Match4x(OsrmClient osrm)
+        private static async Task Match4x(OsrmClient osrm)
         {
             var locations = new LocationWithTimestamp[] {
                 new LocationWithTimestamp(52.542648, 13.393252, 1424684612),
@@ -186,22 +190,22 @@ namespace Osrm.Client.Demo
                 Classify = true
             };
 
-            var result = osrm.Match(request);
+            var result = await osrm.MatchAsync(request);
         }
 
-        private static void Nearest4x(OsrmClient osrm)
+        private static async Task Nearest4x(OsrmClient osrm)
         {
-            var result = osrm.Nearest(new Location(52.4224, 13.333086));
+            var result = await osrm.NearestAsync(new Location(52.4224, 13.333086));
         }
 
-        private static void Trip4x(OsrmClient osrm)
+        private static async Task Trip4x(OsrmClient osrm)
         {
             var locations = new Location[] {
                 new Location(52.503033, 13.420526),
                 new Location(52.516582, 13.429290),
             };
 
-            var result = osrm.Trip(locations);
+            var result = await osrm.TripAsync(locations);
         }
 
         #endregion 4x

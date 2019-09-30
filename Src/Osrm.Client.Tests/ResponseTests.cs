@@ -1,4 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Osrm.Client.Models;
 
 namespace Osrm.Client.Tests
@@ -6,7 +9,10 @@ namespace Osrm.Client.Tests
     [TestClass]
     public class ResponseTests
     {
-        protected OsrmClient osrm = new OsrmClient("http://router.project-osrm.org/");
+        protected OsrmClient osrm = new OsrmClient(new HttpClient()
+        {
+            BaseAddress = new Uri("http://router.project-osrm.org/")
+        });
 
         private void CheckStatus200(OsrmBaseResponse response)
         {
@@ -14,14 +20,14 @@ namespace Osrm.Client.Tests
         }
 
         [TestMethod]
-        public void Route_Response()
+        public async Task Route_Response()
         {
             var locations = new Location[] {
                 new Location(52.503033, 13.420526),
                 new Location(52.516582, 13.429290),
             };
 
-            var result = osrm.Route(locations);
+            var result = await osrm.RouteAsync(locations);
             var geometryLenDefaultZoom = result.RouteGeometry.Length;
 
             CheckStatus200(result);
@@ -29,7 +35,7 @@ namespace Osrm.Client.Tests
             Assert.IsTrue(result.AlternativeGeometries.Length > 0);
             Assert.AreEqual<int>(0, result.RouteInstructions.Length);
 
-            var result2 = osrm.Route(new ViarouteRequest()
+            var result2 = await osrm.RouteAsync(new ViarouteRequest()
             {
                 Locations = locations,
                 SendLocsAsEncodedPolyline = true,
@@ -40,7 +46,7 @@ namespace Osrm.Client.Tests
             Assert.AreEqual<int>(0, result2.AlternativeGeometries.Length);
             Assert.AreEqual<int>(0, result2.RouteInstructions.Length);
 
-            var result3 = osrm.Route(new ViarouteRequest()
+            var result3 = await osrm.RouteAsync(new ViarouteRequest()
             {
                 Locations = locations,
                 Instructions = true,
@@ -55,7 +61,7 @@ namespace Osrm.Client.Tests
         }
 
         [TestMethod]
-        public void Table_Response()
+        public async Task Table_Response()
         {
             var locations = new Location[] {
                 new Location(52.554070, 13.160621),
@@ -64,7 +70,7 @@ namespace Osrm.Client.Tests
                 new Location(52.554070, 13.160621),
             };
 
-            var result = osrm.Table(locations);
+            var result = await osrm.TableAsync(locations);
             CheckStatus200(result);
             Assert.AreEqual<int>(4, result.DistanceTable.Length);
             Assert.AreEqual<int>(4, result.DistanceTable[0].Length);
@@ -82,7 +88,7 @@ namespace Osrm.Client.Tests
                 new Location(52.554070, 13.160621),
             };
 
-            var result2 = osrm.Table(new TableRequest()
+            var result2 = await osrm.TableAsync(new TableRequest()
             {
                 SourceLocations = src,
                 DestinationLocations = dst
@@ -94,7 +100,7 @@ namespace Osrm.Client.Tests
         }
 
         [TestMethod]
-        public void Match_Response()
+        public async Task Match_Response()
         {
             var locations = new LocationWithTimestamp[] {
                 new LocationWithTimestamp(52.542648, 13.393252, 1424684612),
@@ -109,7 +115,7 @@ namespace Osrm.Client.Tests
                 Classify = true
             };
 
-            var result = osrm.Match(request);
+            var result = await osrm.MatchAsync(request);
 
             CheckStatus200(result);
             Assert.IsTrue(result.Matchings.Length > 0);
@@ -118,23 +124,23 @@ namespace Osrm.Client.Tests
         }
 
         [TestMethod]
-        public void Nearest_Response()
+        public async Task Nearest_Response()
         {
-            var result = osrm.Nearest(new Location(52.4224, 13.333086));
+            var result = await osrm.NearestAsync(new Location(52.4224, 13.333086));
 
             CheckStatus200(result);
             Assert.IsNotNull(result.MappedCoordinate);
         }
 
         [TestMethod]
-        public void Trip_Response()
+        public async Task Trip_Response()
         {
             var locations = new Location[] {
                 new Location(52.503033, 13.420526),
                 new Location(52.516582, 13.429290),
             };
 
-            var result = osrm.Trip(locations);
+            var result = await osrm.TripAsync(locations);
 
             CheckStatus200(result);
             Assert.AreEqual<int>(1, result.Trips.Length);

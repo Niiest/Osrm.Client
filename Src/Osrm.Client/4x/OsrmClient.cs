@@ -2,13 +2,14 @@
 using Osrm.Client.Models;
 using System;
 using System.Collections.Generic;
-using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Osrm.Client
 {
     public class OsrmClient
     {
-        public string Url { get; set; }
+        private readonly HttpClient _client;
 
         protected readonly string NearestServiceName = "nearest";
         protected readonly string RouteServiceName = "viaroute";
@@ -16,18 +17,18 @@ namespace Osrm.Client
         protected readonly string MatchServiceName = "match";
         protected readonly string TripServiceName = "trip";
 
-        public OsrmClient(string url)
+        public OsrmClient(HttpClient client)
         {
-            Url = url;
+            _client = client;
         }
 
         /// <summary>
         /// Returns the nearest street segment for a given coordinate
         /// <param name="locs"></param>
         /// <returns></returns>
-        public NearestResponse Nearest(Location loc)
+        public Task<NearestResponse> NearestAsync(Location loc)
         {
-            return Nearest(new NearestRequest()
+            return NearestAsync(new NearestRequest()
             {
                 Location = loc
             });
@@ -37,9 +38,9 @@ namespace Osrm.Client
         /// Returns the nearest street segment for a given coordinate
         /// <param name="requestParams"></param>
         /// <returns></returns>
-        public NearestResponse Nearest(NearestRequest requestParams)
+        public Task<NearestResponse> NearestAsync(NearestRequest requestParams)
         {
-            return Send<NearestResponse>(NearestServiceName, requestParams.UrlParams);
+            return SendAsync<NearestResponse>(NearestServiceName, requestParams.UrlParams);
         }
 
         /// <summary>
@@ -48,9 +49,9 @@ namespace Osrm.Client
         /// </summary>
         /// <param name="locs"></param>
         /// <returns></returns>
-        public ViarouteResponse Route(Location[] locs)
+        public Task<ViarouteResponse> RouteAsync(Location[] locs)
         {
-            return Route(new ViarouteRequest()
+            return RouteAsync(new ViarouteRequest()
             {
                 Locations = locs
             });
@@ -62,9 +63,9 @@ namespace Osrm.Client
         /// </summary>
         /// <param name="requestParams"></param>
         /// <returns></returns>
-        public ViarouteResponse Route(ViarouteRequest requestParams)
+        public Task<ViarouteResponse> RouteAsync(ViarouteRequest requestParams)
         {
-            return Send<ViarouteResponse>(RouteServiceName, requestParams.UrlParams);
+            return SendAsync<ViarouteResponse>(RouteServiceName, requestParams.UrlParams);
         }
 
         /// <summary>
@@ -75,9 +76,9 @@ namespace Osrm.Client
         /// </summary>
         /// <param name="locs"></param>
         /// <returns></returns>
-        public TableResponse Table(Location[] locs)
+        public Task<TableResponse> TableAsync(Location[] locs)
         {
-            return Table(new TableRequest()
+            return TableAsync(new TableRequest()
             {
                 Locations = locs
             });
@@ -91,9 +92,9 @@ namespace Osrm.Client
         /// </summary>
         /// <param name="requestParams"></param>
         /// <returns></returns>
-        public TableResponse Table(TableRequest requestParams)
+        public Task<TableResponse> TableAsync(TableRequest requestParams)
         {
-            return Send<TableResponse>(TableServiceName, requestParams.UrlParams);
+            return SendAsync<TableResponse>(TableServiceName, requestParams.UrlParams);
         }
 
         /// <summary>
@@ -106,9 +107,9 @@ namespace Osrm.Client
         /// </summary>
         /// <param name="locs"></param>
         /// <returns></returns>
-        public MatchResponse Match(LocationWithTimestamp[] locs)
+        public Task<MatchResponse> MatchAsync(LocationWithTimestamp[] locs)
         {
-            return Match(new MatchRequest()
+            return MatchAsync(new MatchRequest()
             {
                 Locations = locs
             });
@@ -124,9 +125,9 @@ namespace Osrm.Client
         /// </summary>
         /// <param name="requestParams"></param>
         /// <returns></returns>
-        public MatchResponse Match(MatchRequest requestParams)
+        public Task<MatchResponse> MatchAsync(MatchRequest requestParams)
         {
-            return Send<MatchResponse>(MatchServiceName, requestParams.UrlParams);
+            return SendAsync<MatchResponse>(MatchServiceName, requestParams.UrlParams);
         }
 
         /// <summary>
@@ -138,9 +139,9 @@ namespace Osrm.Client
         /// </summary>
         /// <param name="locs">Trip does not support computing alternatives</param>
         /// <returns></returns>
-        public TripResponse Trip(Location[] locs)
+        public Task<TripResponse> TripAsync(Location[] locs)
         {
-            return Trip(new ViarouteRequest()
+            return TripAsync(new ViarouteRequest()
             {
                 Locations = locs
             });
@@ -154,21 +155,18 @@ namespace Osrm.Client
         /// Trip does not support computing alternatives.
         /// <param name="requestParams">Trip does not support computing alternatives</param>
         /// <returns></returns>
-        public TripResponse Trip(ViarouteRequest requestParams)
+        public Task<TripResponse> TripAsync(ViarouteRequest requestParams)
         {
-            return Send<TripResponse>(TripServiceName, requestParams.UrlParams);
+            return SendAsync<TripResponse>(TripServiceName, requestParams.UrlParams);
         }
 
-        protected T Send<T>(string service, List<Tuple<string, string>> urlParams)
+        protected async Task<T> SendAsync<T>(string service, List<Tuple<string, string>> urlParams)
         {
-            var fullUrl = OsrmRequestBuilder.GetUrl(Url, service, urlParams);
-            string json = null;
-            using (var client = new WebClient())
-            {
-                json = client.DownloadString(new Uri(fullUrl));
-            }
+            var fullUrl = OsrmRequestBuilder.GetUrl(_client.BaseAddress.AbsoluteUri, service, urlParams);
+            var json = await _client.GetStringAsync(new Uri(fullUrl))
+                .ConfigureAwait(continueOnCapturedContext: false);
 
-            return JsonConvert.DeserializeObject<T>(json); ;
+            return JsonConvert.DeserializeObject<T>(json);
         }
     }
 }
