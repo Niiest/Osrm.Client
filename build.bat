@@ -1,0 +1,1 @@
+dotnet pack ./src/Osrm.Client.Standard -c Release --output ./

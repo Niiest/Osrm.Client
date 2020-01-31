@@ -4,8 +4,9 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <RootNamespace>Osrm.Client</RootNamespace>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Title>Osrm.Client.Standard</Title>
-        <PackageId>Osrm.Client.Standard</PackageId>
+        <Title>Atlas.Osrm.Client</Title>
+        <PackageId>Atlas.Osrm.Client</PackageId>
+        <PackageVersion>1.1.0</PackageVersion>
         <Authors>Pavel Pisligin</Authors>
         <PackageProjectUrl>https://github.com/Niiest/Osrm.Client</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/Niiest/Osrm.Client/blob/master/LICENSE.md</PackageLicenseUrl>

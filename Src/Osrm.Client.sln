@@ -1,11 +1,9 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Osrm.Client", "Osrm.Client\Osrm.Client.csproj", "{A015CAE3-5FEA-4F88-935E-135E6D6A48C2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Osrm.Client.Demo", "Osrm.Client.Demo\Osrm.Client.Demo.csproj", "{761B2528-93DD-4B6D-854C-59C3604F6883}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Osrm.Client.Tests", "Osrm.Client.Tests\Osrm.Client.Tests.csproj", "{7A283621-0E12-4441-8800-9DC927938E63}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Osrm.Client.Standard", "Osrm.Client.Standard\Osrm.Client.Standard.csproj", "{0F3E3933-E516-4E07-A455-157D110F902E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Osrm.Client.Standard.Demo", "Osrm.Client.Standard.Demo\Osrm.Client.Standard.Demo.csproj", "{A8D54A99-5890-49CC-A886-2CB5DB6F65E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Osrm.Client.Standard.Tests", "Osrm.Client.Standard.Tests\Osrm.Client.Standard.Tests.csproj", "{05F5D190-4832-4DCD-BCFC-7F6A635BE7F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,22 +11,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A015CAE3-5FEA-4F88-935E-135E6D6A48C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A015CAE3-5FEA-4F88-935E-135E6D6A48C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A015CAE3-5FEA-4F88-935E-135E6D6A48C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A015CAE3-5FEA-4F88-935E-135E6D6A48C2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{761B2528-93DD-4B6D-854C-59C3604F6883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{761B2528-93DD-4B6D-854C-59C3604F6883}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{761B2528-93DD-4B6D-854C-59C3604F6883}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{761B2528-93DD-4B6D-854C-59C3604F6883}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7A283621-0E12-4441-8800-9DC927938E63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7A283621-0E12-4441-8800-9DC927938E63}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7A283621-0E12-4441-8800-9DC927938E63}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7A283621-0E12-4441-8800-9DC927938E63}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0F3E3933-E516-4E07-A455-157D110F902E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0F3E3933-E516-4E07-A455-157D110F902E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F3E3933-E516-4E07-A455-157D110F902E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F3E3933-E516-4E07-A455-157D110F902E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8D54A99-5890-49CC-A886-2CB5DB6F65E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8D54A99-5890-49CC-A886-2CB5DB6F65E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8D54A99-5890-49CC-A886-2CB5DB6F65E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8D54A99-5890-49CC-A886-2CB5DB6F65E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05F5D190-4832-4DCD-BCFC-7F6A635BE7F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05F5D190-4832-4DCD-BCFC-7F6A635BE7F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05F5D190-4832-4DCD-BCFC-7F6A635BE7F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05F5D190-4832-4DCD-BCFC-7F6A635BE7F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
